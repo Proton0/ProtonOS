@@ -1,0 +1,22 @@
+{
+  "ppm_online_test": {
+    "py_file": "os_filesystem.ppm.ppm_online_test.main",
+    "pkg_data": ["ppm_online_test/main.py", "ppm_online_test/happy.txt"]
+  },
+  "speedtest": {
+    "py_file": "os_filesystem.ppm.speedtest.main",
+    "pkg_data": ["speedtest/main.py"]
+  },
+  "virtual_machine": {
+    "py_file": "os_filesystem.ppm.virtual_machine.main",
+    "pkg_data": ["virtual_machine/main.py"]
+  },
+  "halt": {
+    "py_file": "os_filesystem.ppm.halt.main",
+    "pkg_data": ["halt/main.py"]
+  },
+  "nano": {
+    "py_file": "os_filesystem.ppm.nano.main",
+    "pkg_data": ["nano/main.py"]
+  }
+}

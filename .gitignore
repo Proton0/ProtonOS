@@ -1,0 +1,4 @@
+os_filesystem
+.idea
+qodana.yaml
+__pycache__
