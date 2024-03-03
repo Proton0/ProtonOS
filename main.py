@@ -59,12 +59,23 @@ import users  # User Manager
 logging.info("Loading commands")
 import commands  # Basic Commands
 
+
+def load(command):
+    if command[0] == "load":
+        if not len(command) >= 2:
+            print("Not enough arguments provided for the command")
+            return
+        try:
+            exec(f"import {command[2]}")
+        except Exception as e:
+            logger.error(f"error : {e}")
+
 # System Commands
 system_commands = [
     commands.terminalexit,  # change from sexit to terminalexit because idk it sounds weird
     commands.set_env_variable,
     commands.view,
-    commands.load,
+    load,
     commands.neofetch,
     users.switch,
     users.changepassword,
@@ -86,10 +97,10 @@ def Load_PPM_Modules():
     try:
         logging.info("reading ppm json")
         with open("os_filesystem/system/ppm.json", "r") as f:
-            logging.info("parsing ppm")
+            logger.info("parsing ppm")
             ppm_data = json.load(f)
-            logging.info("importing packages")
-            logging.info(ppm_data)
+            logger.info("importing packages")
+            logger.info(ppm_data)
             for package_name, package_import in ppm_data.items():
                 logger.info(f"Loading ppm package {package_name}")
                 last_imported_module = package_name

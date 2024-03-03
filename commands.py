@@ -26,14 +26,6 @@ def view(command):
             print(f"{key} : {value}")
 
 
-def load(command):
-    if command[0] == "load":
-        if not len(command) >= 2:
-            print("Not enough arguments provided for the command")
-            return
-        print("Load is not yet implemented")
-
-
 def neofetch(command):
     if command[0] == "neofetch":
         print(f"System : {platform.system()}")
