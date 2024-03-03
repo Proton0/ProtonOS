@@ -14,5 +14,11 @@
   "halt": {
     "py_file": "os_filesystem.ppm.halt.main",
     "pkg_data": ["halt/main.py"]
+  },
+  "auto_login": {
+    "py_file": "os_filesystem.ppm.auto_login.main",
+    "pkg_data": [
+      "auto_login/main.py"
+    ]
   }
 }

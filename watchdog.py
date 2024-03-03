@@ -13,7 +13,7 @@ logger = logging.getLogger("Watchdog")
 def watchdog(package_name, last_imported_module):
     counter = 0
     while counter < 5:
-        time.sleep(1)  # Wait for 300ms
+        time.sleep(0.3)  # Reduced to 0.3
         if last_imported_module != package_name:
             break  # Module has been successfully imported, exit watchdog
         else:

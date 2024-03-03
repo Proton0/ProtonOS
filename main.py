@@ -113,19 +113,22 @@ if enviorment_tables["debug_mode"]:
 
 print(f"ProtonOS {enviorment_tables['version']}")
 print("Made by Proton0")
-user = input("Enter username (default is root) : ")
-if user == "":
-    user = "root"
-password = input(f"Enter password for user {user} : ")
-users.switch(["switch", user, password])
-
 if enviorment_tables["logged_in_user"] == "":
-    logger.error("An error while logging in. Most likely you have entered the wrong username or password")
-    exit()
+    user = input("Enter username (default is root) : ")
+    if user == "":
+        user = "root"
+    password = input(f"Enter password for user {user} : ")
+    users.switch(["switch", user, password])
+
+    if enviorment_tables["logged_in_user"] == "":
+        logger.error("An error while logging in. Most likely you have entered the wrong username or password")
+        exit()
+    else:
+        # set up
+        enviorment_tables["machine_name"] = "protonOS"
+        enviorment_tables["current_directory"] = "/"
 else:
-    # set up
-    enviorment_tables["machine_name"] = "protonOS"
-    enviorment_tables["current_directory"] = "/"
+    enviorment_tables["user_color"] = user_color.LoginGetUsername(enviorment_tables["logged_in_user"])
 
 # Main Terminal
 while True:
