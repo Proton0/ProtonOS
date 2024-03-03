@@ -5,7 +5,7 @@ import os
 import shutil
 import requests
 
-
+import permissions
 
 if __main__.enviorment_tables["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -33,6 +33,9 @@ def install_package_local(command):
         if not len(command) >= 3:  # ppm install <package name> <package py name>
             print("Not enough arguments provided for the command")
             return
+        if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"], "ppm"):
+            print("permission error")
+            return
         print(f"Installing PPM {command[1]} with file {command[2]}")
         logger.info("opened ppm")
         f = open("os_filesystem/system/ppm.json", "r+")
@@ -51,6 +54,9 @@ def uninstall_package(command):
     if command[0] == "uninstall_package":
         if not len(command) >= 2:
             print("not enough arguments provided for the command")
+            return
+        if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"], "ppm"):
+            print("permission error")
             return
         shutil.rmtree(f"os_filesystem/ppm/{command[1]}")
         logger.info("Deleted package from filesystem")
@@ -75,6 +81,9 @@ def install_package(command):
             return
         if not len(command) >= 2:  # install_package <package name>
             print("Not enough arguments provided for the command")
+            return
+        if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"], "ppm"):
+            print("permission error")
             return
         logger.info("Contacting server")
         r = requests.get(f"{__main__.enviorment_tables['ppm_online_server']}/packages.json")

@@ -1,5 +1,6 @@
 import __main__
 import shutil
+import permissions
 import os
 import logging
 
@@ -40,7 +41,7 @@ def corrupted(reason):
 
 def cd(command):
     if command[0] == "cd":
-        if not len(command) > 2:
+        if not len(command) == 2:
             print("not enough args")
             return
         if command[1] == "..":
@@ -48,12 +49,21 @@ def cd(command):
             if __main__.enviorment_tables["full_current_directory"] == "os_filesystem":
                 __main__.enviorment_tables["current_directory"] == "/"
             return
+        if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
+                                              __main__.enviorment_tables["full_current_directory"] + "/" + command[1]):
+            print("permission error")
+            return
         __main__.enviorment_tables["current_directory"] = command[1]
         __main__.enviorment_tables["full_current_directory"] = __main__.enviorment_tables["full_current_directory"] + "/" + command[1]
 
 def ls(command):
     if command[0] == "ls":
-        if len(command) > 2:
+
+        if len(command) == 2:
+            if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
+                                                  f"os_filesystem/{command[1]}"):
+                print("permission error")
+                return
             k = os.listdir("os_filesystem/" + command[1])
             for f in k:
                 print(f)
@@ -68,3 +78,34 @@ def ls(command):
             for f in k:
                 print(f)
             return
+
+
+def cat(command):
+    if command[0] == "cat":
+        if len(command) == 2:
+            if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
+                                                  __main__.enviorment_tables["full_current_directory"]):
+                print("permission error")
+                return
+            f = open(__main__.enviorment_tables["full_current_directory"] + "/" + command[1], "r")
+            for line in f.readlines():
+                print(line)
+
+
+def rm(command):
+    if command[0] == "rm":
+        if len(command) == 2:
+            if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"],
+                                                  __main__.enviorment_tables["full_current_directory"] + "/" + command[
+                                                      1]):
+                print("permission error")
+                return
+            if os.path.isfile(__main__.enviorment_tables["full_current_directory"] + "/" + command[1]):
+                os.remove(__main__.enviorment_tables["full_current_directory"] + "/" + command[1])
+            else:
+                shutil.rmtree(__main__.enviorment_tables["full_current_directory"] + "/" + command[1])
+
+
+def rmdir(command):
+    if command[0] == "rmdir":
+        rm(["rm", command[1]])

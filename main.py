@@ -17,7 +17,7 @@ init(autoreset=True)
 
 # Configurations and stuff
 enviorment_tables = {
-    "version": 1.0,
+    "version": 1.1,
     "user_color": Fore.GREEN,  # System default
     "logged_in_user": "",  # we switch to root once everything has been set-up
     "current_directory": "",
@@ -45,6 +45,8 @@ else:
     print("Debug mode is enabled")
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 logger = logging.getLogger("main")
+# load permissions
+import permissions
 # load FS
 logger.info("Loading the filesystem now!")
 import filesystem
@@ -82,7 +84,10 @@ system_commands = [
     user_color.ChangeColor,
     filesystem.ls,
     filesystem.cd,
-    users.AddUser
+    users.AddUser,
+    filesystem.cat,
+    filesystem.rm,
+    filesystem.rmdir
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 

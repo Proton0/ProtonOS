@@ -5,6 +5,7 @@ import logging
 import json
 
 import user_color
+import permissions
 
 if __main__.enviorment_tables["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -54,6 +55,9 @@ def switch(command):
                     __main__.enviorment_tables["logged_in_user"] = command[
                         1]  # fix bug where this went to data and another where it switches to the god dam password but not the god dam root
                     __main__.enviorment_tables["user_color"] = user_color.LoginGetUsername(command[1]) # Use User_color
+                    permissions.LoginCheck(command[1])  # Permissions and stuff ykyk
+                    __main__.enviorment_tables["current_directory"] = "/"
+                    __main__.enviorment_tables["full_current_directory"] = "os_filesystem"
                 else:
                     print("Password does not match")
                     logger.info(f"expected : {value} but got : {md5}")
