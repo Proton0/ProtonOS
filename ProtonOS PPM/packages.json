@@ -14,9 +14,5 @@
   "halt": {
     "py_file": "os_filesystem.ppm.halt.main",
     "pkg_data": ["halt/main.py"]
-  },
-  "nano": {
-    "py_file": "os_filesystem.ppm.nano.main",
-    "pkg_data": ["nano/main.py"]
   }
 }
