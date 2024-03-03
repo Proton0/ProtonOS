@@ -59,16 +59,35 @@ def switch(command):
                     logger.info(f"expected : {value} but got : {md5}")
 
 
+def AddUser(command):
+    if command[0] == "add_user":
+        if not len(command) == 3:
+            print("Usage: add_user <username> <password>")
+            return
+        logging.info("hashing password")
+        pw_hash = hashlib.md5(command[3].encode()).hexdigest()
+        f = open("os_filesystem/system/users.json", "r+")
+        user_data = json.load(f)  # Load JSON
+        user_data[command[1]] = pw_hash  # Set username to hash
+        f.seek(0)
+        f.write(json.dumps(user_data))  # write
+        f.truncate()
+        f.close()  # close
+        print("User created.")
+
+
 def changepassword(command):
     if command[0] == "changepassword":
         print("Command n")
-        if not len(command) >= 3:
+        if not len(command) >= 3:  # changepassword <username> <password>
             print("Not enough arguments provided for the command")
             return
         print(f"Changing account {command[1]}'s password to {command[2]}")
         logging.info(f"Hash of new password is {hashlib.md5(command[2].encode()).hexdigest()}")
-        default_users[command[1]] = hashlib.md5(command[2].encode()).hexdigest()
-        logging.info("Saving the password")
-        f = open("os_filesystem/system/users.json", "w")
-        f.write(json.dumps(default_users))
-        logging.info("Saved new password succesfully")
+        f = open("os_filesystem/system/users.json", "r+")  # open
+        user_data = json.load(f)  # load json
+        user_data[command[1]] = hashlib.md5(command[2].encode()).hexdigest()  # set user's password to hashed password
+        f.seek(0)
+        f.write(json.dumps(user_data))  # write
+        f.truncate()
+        f.close()  # close

@@ -70,7 +70,8 @@ system_commands = [
     users.changepassword,
     user_color.ChangeColor,
     filesystem.ls,
-    filesystem.cd
+    filesystem.cd,
+    users.AddUser
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 

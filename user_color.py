@@ -38,7 +38,7 @@ def LoginGetUsername(username):
                 return value
     except Exception as e:
         logger.error(f"Error while getting the color for {username} : {e}")
-        return default_colors["system"]
+        return Fore.GREEN
     logger.warning(f"The user {username} does not have a system color set.")
 
 def ChangeColor(command):
