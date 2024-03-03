@@ -54,7 +54,8 @@ def ChangeColor(command):
         print(f"[5] {Fore.CYAN} CYAN")
         print(f"[6] {Fore.WHITE} WHITE")
         print(f"[7] {Fore.BLACK} BLACK")
-        z = input("Select number")
+        print(f"[8] {Fore.MAGENTA} MAGENTA")
+        z = input("Select a number : ")
         if z == "1":
             k[__main__.enviorment_tables["logged_in_user"]] = Fore.RED
         elif z == "2":
@@ -69,6 +70,8 @@ def ChangeColor(command):
             k[__main__.enviorment_tables["logged_in_user"]] = Fore.WHITE
         elif z == "7":
             k[__main__.enviorment_tables["logged_in_user"]] = Fore.BLACK
+        elif z == "8":
+            k[__main__.enviorment_tables["logged_in_user"]] = Fore.MAGENTA
         print("Saving color...")
         f.seek(0)
         f.write(json.dumps(k))

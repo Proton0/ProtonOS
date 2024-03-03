@@ -13,7 +13,6 @@ from timeit import default_timer as timer
 import logging
 
 start = timer()
-# ProtonOS Setup
 init(autoreset=True)
 
 # Configurations and stuff
