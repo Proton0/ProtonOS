@@ -79,6 +79,9 @@ def FSOperationAllowed(username, attempted_access):
     if username == "root":
         logger.info(f"Allowed user root to access {attempted_access}")
         return True
+    if __main__.enviorment_tables["run_command_as_sudo"]:
+        __main__.enviorment_tables["run_command_as_sudo"] = False
+        return True
 
     f = open("os_filesystem/system/permissions.json", "r")
     permission_data = json.load(f)

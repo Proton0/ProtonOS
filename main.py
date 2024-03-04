@@ -25,8 +25,9 @@ enviorment_tables = {
     "machine_name": "",  # all of this will be configured in user.py
     "debug_mode": True,
     "ppm_online_server": "http://127.0.0.1:8080",
-    "ppm_allow_online": False,
+    "ppm_allow_online": True,
     "load_modules": True,
+    "run_command_as_sudo": False
 }
 if enviorment_tables["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -156,6 +157,11 @@ while True:
     else:
         for command in system_commands:
             try:
-                command(user_input)
+                if user_input[0] == "sudo":
+                    enviorment_tables["run_command_as_sudo"] = True
+                    user_input.remove("sudo")
+                    command(user_input)
+                else:
+                    command(user_input)
             except Exception as e:
                 logger.error(f"Error while executing the command : {e}")
