@@ -7,7 +7,6 @@
 # Core Modules
 from colorama import init, Fore
 import os
-import threading
 import json
 import platform
 from timeit import default_timer as timer
