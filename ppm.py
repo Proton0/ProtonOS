@@ -4,7 +4,7 @@ import json
 import os
 import shutil
 import requests
-import threading
+from concurrent.futures.thread import ThreadPoolExecutor
 import permissions
 
 if __main__.enviorment_tables["debug_mode"]:
@@ -34,6 +34,7 @@ def PPMDownload(file):
     f = open(f"os_filesystem/ppm/{file}", "wb")  # put the data of the file
     f.write(r.content)
     f.close()
+    print(f"Finished downloading {file}")
 
 
 def install_package_local(command):
@@ -126,9 +127,12 @@ def install_package(command):
                 logger.info(
                     f"Python file is {pkgdata['py_file']} and the items required for the package is {pkgdata['pkg_data']}")
                 os.mkdir(f"os_filesystem/ppm/{pkg}")
-                for file in pkgdata['pkg_data']:
-                    print(f"Downloading {file}")
-                    threading.Thread(target=PPMDownload, args=(file,)).start()
+                with ThreadPoolExecutor(max_workers=3) as executor:
+                    ordinal = 1
+                    for arg in pkgdata['pkg_data']:
+                        print(f"Started download for {arg}")
+                        executor.submit(PPMDownload, arg)
+                        ordinal += 1
                 print("Download complete")
                 print(f"Installing {pkg}")
                 logger.info("opening ppm")
@@ -144,6 +148,11 @@ def install_package(command):
                 logger.info("closing ppm")
                 f.close()
                 print("Installed package succesfully")
+
+                try:
+                    exec(f"import {pkgdata['py_file']}")
+                except Exception as e:
+                    logger.error(f"Error while importing package : {e}")
 
 
 # Set the commands up (bug fix)
