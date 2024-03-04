@@ -50,27 +50,29 @@ def ChangeUserPermissions(command):
         if not len(command) == 2:
             print("usage: change_permission <username>")
             return
-    if __main__.enviorment_tables["logged_in_user"] != "root":
-        print("You are not allowed to access this command.")
-        return
-    if command[1] == "root":
-        print("You cannot change root permissions.")
-        return
-    f = open("os_filesystem/system/permissions.json", "r+")
-    permission_data = json.load(f)
-    if command[1] in permission_data:
-        print(f"Select permission for account {command[1]}")
-        print("[1] Full access of the OS")
-        print("[2] Cannot access system folder but can install PPM packages")
-        print("[3] Cannot access both system and PPM")
-        k = input("Select permission : ")
-        f = open("os_filesystem/system/permissions.json", "r+")
+        if __main__.enviorment_tables["logged_in_user"] != "root":
+            print("You are not allowed to access this command.")
+            return
+        if command[1] == "root":
+            print("You cannot change root permissions.")
+            return
+        f = open("os_filesystem/system/permissions.json", "r")
         permission_data = json.load(f)
-        permission_data[command[1]] == int(k)
-        f.seek(0)
-        f.write(json.dumps(permission_data))
-        f.truncate()
-        f.close()
+        logger.info("loaded permission data")
+        for user, permission_level in permission_data.items():
+            if user == command[1]:
+                print(f"Select permission for account {command[1]}")
+                print("[1] Full access of the OS")
+                print("[2] Cannot access system folder but can install PPM packages")
+                print("[3] Cannot access both system and PPM")
+                k = input("Select permission : ")
+                f = open("os_filesystem/system/permissions.json", "r+")
+                permission_data = json.load(f)
+                permission_data[command[1]] = int(k)
+                f.seek(0)
+                f.write(json.dumps(permission_data))
+                f.truncate()
+                f.close()
 
 
 def FSOperationAllowed(username, attempted_access):

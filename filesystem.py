@@ -48,9 +48,23 @@ def cd(command):
             print("not enough args")
             return
         if command[1] == "..":
-            # go back a directory
+            # Go back a directory
             if __main__.enviorment_tables["full_current_directory"] == "os_filesystem":
-                __main__.enviorment_tables["current_directory"] == "/"
+                __main__.enviorment_tables["current_directory"] = "/"
+                __main__.enviorment_tables["full_current_directory"] = "/"
+            else:
+                current_directory_parts = __main__.enviorment_tables["full_current_directory"].split("/")
+                parent_directory_parts = current_directory_parts[:-1]
+                parent_directory = "/".join(parent_directory_parts)
+                parent_directory_name = parent_directory_parts[-1]
+                if parent_directory_name == "os_filesystem":
+                    __main__.enviorment_tables["current_directory"] = "/"
+                else:
+                    __main__.enviorment_tables["current_directory"] = parent_directory_name
+                if parent_directory == "/" or parent_directory == "":
+                    __main__.enviorment_tables["full_current_directory"] = "os_filesystem"
+                else:
+                    __main__.enviorment_tables["full_current_directory"] = parent_directory
             return
         if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
                                               __main__.enviorment_tables["full_current_directory"] + "/" + command[1]):
