@@ -1,6 +1,9 @@
 import platform
 import __main__  # in order to access enviorment tables
 
+import psutil
+import sys
+
 
 def terminalexit(command):
     if command[0] == "exit":
@@ -28,9 +31,17 @@ def view(command):
 
 def neofetch(command):
     if command[0] == "neofetch":
-        print(f"System : {platform.system()}")
-        print(f"Version : {platform.version()}")
-        print(f"Release : {platform.release()}")
-        print(f"CPU : {platform.processor()}")
-        print(f"Architecture : {platform.architecture()}")
-        print(f"Console : ProtonOS Emulated Console")
+        cpu = "Unknown CPU"
+        if platform.system() == "Darwin":
+            try:
+                cpu = psutil.cpu_times().physical_id
+            except Exception as e:
+                print("Failed to get CPU")
+                if platform.processor() == "arm":
+                    cpu = "Unknown Apple Silicon CPU"
+        else:
+            cpu = platform.processor()
+        print(f"Hostname : {__main__.enviorment_tables['machine_name']}")
+        print(f"Operating System : protonOS {__main__.enviorment_tables['version']}")
+        print(f"CPU : {cpu} ({psutil.cpu_percent(interval=1)}% usage)")
+        print(f"RAM : {psutil.virtual_memory().total / (1024 * 1024 * 1024)}GB")

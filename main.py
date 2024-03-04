@@ -8,7 +8,9 @@
 from colorama import init, Fore
 import sys
 import threading
+import os
 import json
+import platform
 from timeit import default_timer as timer
 import logging
 
@@ -17,7 +19,7 @@ init(autoreset=True)
 
 # Configurations and stuff
 enviorment_tables = {
-    "version": 1.1,
+    "version": 1.2,
     "user_color": Fore.GREEN,  # System default
     "logged_in_user": "",  # we switch to root once everything has been set-up
     "current_directory": "",
@@ -152,8 +154,14 @@ while True:
     user_input = input(
         f"{enviorment_tables['user_color']}{enviorment_tables['logged_in_user']}@{enviorment_tables['machine_name']}{Fore.RESET} {enviorment_tables["current_directory"]} > ").split(
         " ")
-    for command in system_commands:
-        try:
-            command(user_input)
-        except Exception as e:
-            logger.error(f"Error while executing the command : {e}")
+    if os.path.isfile(f"{enviorment_tables['full_current_directory']}/{user_input[0]}.proton"):
+        if platform.system() == "Darwin" or platform.system() == "Linux":
+            os.system(f"bash {enviorment_tables['full_current_directory']}/{user_input[0]}.proton")
+        else:
+            os.system(f"{enviorment_tables['full_current_directory']}/{user_input[0]}")
+    else:
+        for command in system_commands:
+            try:
+                command(user_input)
+            except Exception as e:
+                logger.error(f"Error while executing the command : {e}")
