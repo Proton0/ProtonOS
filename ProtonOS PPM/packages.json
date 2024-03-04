@@ -1,7 +1,22 @@
 {
   "ppm_online_test": {
     "py_file": "os_filesystem.ppm.ppm_online_test.main",
-    "pkg_data": ["ppm_online_test/main.py", "ppm_online_test/happy.txt"]
+    "pkg_data": [
+      "ppm_online_test/main.py",
+      "ppm_online_test/happy.txt",
+      "ppm_online_test/Test 1.png",
+      "ppm_online_test/Test 2.png",
+      "ppm_online_test/Test 3.png",
+      "ppm_online_test/Test 4.png",
+      "ppm_online_test/Test 5.png",
+      "ppm_online_test/Test 6.png",
+      "ppm_online_test/Test 7.png",
+      "ppm_online_test/Test 8.png",
+      "ppm_online_test/Test 9.png",
+      "ppm_online_test/Test 10.png",
+      "ppm_online_test/test_10mb.pdf",
+      "ppm_online_test/test_20mb.pdf"
+    ]
   },
   "speedtest": {
     "py_file": "os_filesystem.ppm.speedtest.main",

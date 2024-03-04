@@ -4,7 +4,7 @@ import json
 import os
 import shutil
 import requests
-
+import threading
 import permissions
 
 if __main__.enviorment_tables["debug_mode"]:
@@ -25,6 +25,15 @@ else:
     logger.info("Created PPM json succesfully")
 
 __main__.Load_PPM_Modules()  # LoadPPMModules is in Main because of some issues regarding enviorment table and main-definied stuff
+
+
+def PPMDownload(file):
+    r = requests.get(f"{__main__.enviorment_tables['ppm_online_server']}/{file}")
+    if r.status_code != 200:
+        print(f"Error while downloading {file} : {r.status_code} with message {r.content}")
+    f = open(f"os_filesystem/ppm/{file}", "wb")  # put the data of the file
+    f.write(r.content)
+    f.close()
 
 
 def install_package_local(command):
@@ -119,12 +128,7 @@ def install_package(command):
                 os.mkdir(f"os_filesystem/ppm/{pkg}")
                 for file in pkgdata['pkg_data']:
                     print(f"Downloading {file}")
-                    r = requests.get(f"{__main__.enviorment_tables['ppm_online_server']}/{file}")
-                    if r.status_code != 200:
-                        logger.error(f"Error while downloading {file} : {r.status_code} with message {r.content}")
-                    f = open(f"os_filesystem/ppm/{file}", "wb")  # put the data of the file
-                    f.write(r.content)
-                    f.close()
+                    threading.Thread(target=PPMDownload, args=(file,)).start()
                 print("Download complete")
                 print(f"Installing {pkg}")
                 logger.info("opening ppm")
