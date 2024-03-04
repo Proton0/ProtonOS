@@ -12,6 +12,8 @@ import platform
 from timeit import default_timer as timer
 import logging
 
+time_since_boot = timer()
+
 start = timer()
 init(autoreset=True)
 
@@ -82,12 +84,19 @@ system_commands = [
     filesystem.rm,
     filesystem.rmdir,
     commands.help,
-    permissions.ChangeUserPermissions
+    permissions.ChangeUserPermissions,
+    filesystem.pwd,
+    filesystem.mkdir,
+    commands.echo,
+    commands.ps,
+    commands.time_took,
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 
-
+start_ppm = 0
+end_ppm = 0
 def Load_PPM_Modules():
+    global start_ppm, end_ppm
     if not enviorment_tables["load_modules"]:
         return
     start_ppm = timer()
