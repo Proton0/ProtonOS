@@ -25,9 +25,10 @@ if os.path.exists("os_filesystem/system/permissions.json"):
     logger.info("Permissions.json already exists")
 else:
     logger.info("Creating permissions")
-    f = open("os_filesystem/system/permissions.json", "w")
+    f = open("os_filesystem/system/permissions.json", "w+")
     f.write(json.dumps(default_permissions))
     f.close()
+    exit()
 
 
 def LoginCheck(user):

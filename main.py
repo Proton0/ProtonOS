@@ -6,8 +6,6 @@
 
 # Core Modules
 from colorama import init, Fore
-import sys
-import threading
 import os
 import json
 import platform
@@ -28,30 +26,32 @@ enviorment_tables = {
     "debug_mode": True,
     "ppm_online_server": "http://127.0.0.1:8080",
     "ppm_allow_online": True,
+    "load_modules": True,
 }
 
-# configure if being debugged and the logger
-if not enviorment_tables["debug_mode"]:
-    gettrace = getattr(sys, 'gettrace', None)
-    if gettrace is None:
-        enviorment_tables["debug_mode"] = False
-        logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
-    elif gettrace():
-        print("Debug mode enabled.")
-        enviorment_tables["debug_mode"] = True
-        logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
-    else:
-        enviorment_tables["debug_mode"] = False
-        logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
-else:
-    print("Debug mode is enabled")
+if enviorment_tables["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
+else:
+    logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
+
+# create FS
+if os.path.exists("os_filesystem"):
+    logging.info("Filesystem already exists.")
+else:
+    logging.warning("Filesystem does not exist. Creating one now")
+    os.mkdir("os_filesystem")
+    os.mkdir("os_filesystem/system")
+    print("FS setup completed. Please relaunch ProtonOS")
+    exit()
+
+
 logger = logging.getLogger("main")
+logger.info("Loading the filesystem now!")
+import filesystem
+
 # load permissions
 import permissions
 # load FS
-logger.info("Loading the filesystem now!")
-import filesystem
 
 # load modules and stuff
 logging.info("Loading user colors")
@@ -93,14 +93,10 @@ system_commands = [
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 
-# Proton Package Manager Watchdog
-from watchdog import watchdog
-
-# Proton Package Manager Loader
-last_imported_module = None
-
 def Load_PPM_Modules():
-    global last_imported_module
+    if not enviorment_tables["load_modules"]:
+        return
+    start_ppm = timer()
     try:
         logging.info("reading ppm json")
         with open("os_filesystem/system/ppm.json", "r") as f:
@@ -110,14 +106,11 @@ def Load_PPM_Modules():
             logger.info(ppm_data)
             for package_name, package_import in ppm_data.items():
                 logger.info(f"Loading ppm package {package_name}")
-                last_imported_module = package_name
-                watchdog_thread = threading.Thread(target=watchdog, args=(package_name, last_imported_module))
-                watchdog_thread.start()
                 exec(f"import {package_import}")
-                watchdog_thread.join()  # Wait for watchdog to finish before importing next module
     except Exception as e:
         logger.error(f"Failed to import ppm packages : {e}")
-
+    end_ppm = timer()
+    logger.info(f"PPM packages took {start_ppm - end_ppm}s to load")
 
 import ppm
 
@@ -126,7 +119,7 @@ logger.info("definied system commands succesfully")
 end = timer()
 
 if enviorment_tables["debug_mode"]:
-    logger.debug(f"Time took to configure the OS is {end - start} seconds")
+    logger.debug(f"Time took to configure the OS is {start - end} seconds")
 
 # Ask the user to login
 
