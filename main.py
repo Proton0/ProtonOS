@@ -17,7 +17,7 @@ init(autoreset=True)
 
 # Configurations and stuff
 enviorment_tables = {
-    "version": 1.2,
+    "version": 1.3,
     "user_color": Fore.GREEN,  # System default
     "logged_in_user": "",  # we switch to root once everything has been set-up
     "current_directory": "",
