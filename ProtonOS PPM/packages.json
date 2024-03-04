@@ -41,5 +41,11 @@
     "pkg_data": [
       "donut/main.py"
     ]
+  },
+  "snake": {
+    "py_file": "os_filesystem.ppm.snake.main",
+    "pkg_data": [
+      "snake/main.py"
+    ]
   }
 }

@@ -1,9 +1,8 @@
 import platform
 import __main__  # in order to access enviorment tables
-
+from timeit import default_timer as timer
 import psutil
-import sys
-
+from prettytable import PrettyTable
 
 def terminalexit(command):
     if command[0] == "exit":
@@ -60,3 +59,39 @@ def help(command):
         print("add_user         | Adds a user to the OS")
         print("switch           | Switch users")
         print("change_password  | Changes a user's password")
+
+
+def ps(command):
+    if command[0] == "ps":
+        x = PrettyTable()
+        time = timer() - __main__.time_since_boot
+        x.field_names = ["PID", "TTY", "TIME", "CMD"]
+        x.add_row(["0", "?", time, "kernel"])
+        x.add_row(["1", "?", time, "filesystem"])
+        x.add_row(["2", "?", time, "user_manager"])
+        x.add_row(["3", "?", time, "terminal"])
+        x.add_row(["4", "?", "?", "ps"])
+        print(x)
+
+
+def time_took(command):
+    if command[0] == "time_took":
+        x = PrettyTable()
+        time = timer() - __main__.time_since_boot
+        x.field_names = ["Name", "Time"]
+
+        a = timer() - __main__.time_since_boot
+        b = __main__.end_ppm - __main__.start_ppm
+        c = __main__.end - __main__.start
+
+        x.add_row(["Time since boot", a])
+        x.add_row(["Time took to load PPM Modules", b])
+        x.add_row(["Time took to configure OS", c])
+
+        print(x)
+
+
+def echo(command):
+    if command[0] == "echo":
+        if len(command) == 2:
+            print(command[1])

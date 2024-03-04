@@ -134,3 +134,20 @@ def rm(command):
 def rmdir(command):
     if command[0] == "rmdir":
         rm(["rm", command[1]])
+
+
+def pwd(command):
+    if command[0] == "pwd":
+        print(__main__.enviorment_tables['full_current_directory'])
+
+
+def mkdir(command):
+    if command[0] == "mkdir":
+        if len(command) == 2:
+            if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
+                                                  __main__.enviorment_tables['full_current_directory'] + "/" + command[
+                                                      1]):
+                print("permission error")
+                return
+            else:
+                os.mkdir(__main__.enviorment_tables["full_current_directory"] + "/" + command[1])
