@@ -45,3 +45,18 @@ def neofetch(command):
         print(f"Operating System : protonOS {__main__.enviorment_tables['version']}")
         print(f"CPU : {cpu} ({psutil.cpu_percent(interval=1)}% usage)")
         print(f"RAM : {psutil.virtual_memory().total / (1024 * 1024 * 1024)}GB")
+
+
+def help(command):
+    if command[0] == "help":
+        print("Basic Commands")
+        print("exit             | Exits the program")
+        print("install_package  | Installs any package you want using PPM")
+        print("uninstall_package| Uninstalls any installed packages")
+        print("load             | Load any .py file")
+        print("changecolor      | Changes the user's color")
+        print("set              | Set environment variables")
+        print("view             | View environment variables")
+        print("add_user         | Adds a user to the OS")
+        print("switch           | Switch users")
+        print("change_password  | Changes a user's password")

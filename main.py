@@ -89,7 +89,8 @@ system_commands = [
     users.AddUser,
     filesystem.cat,
     filesystem.rm,
-    filesystem.rmdir
+    filesystem.rmdir,
+    commands.help
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 
