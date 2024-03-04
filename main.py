@@ -23,12 +23,11 @@ enviorment_tables = {
     "current_directory": "",
     "full_current_directory": "os_filesystem",
     "machine_name": "",  # all of this will be configured in user.py
-    "debug_mode": False,
+    "debug_mode": True,
     "ppm_online_server": "http://127.0.0.1:8080",
     "ppm_allow_online": False,
     "load_modules": True,
 }
-
 if enviorment_tables["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
@@ -45,22 +44,12 @@ else:
     exit()
 
 logger = logging.getLogger("main")
-logger.info("Loading the filesystem now!")
+
+logging.info("Loading modules")
 import filesystem
-
-# load permissions
 import permissions
-
-# load FS
-
-# load modules and stuff
-logging.info("Loading user colors")
 import user_color  # User Colors
-
-logger.info("Loading user manager")
 import users  # User Manager
-
-logging.info("Loading commands")
 import commands  # Basic Commands
 
 
@@ -91,7 +80,8 @@ system_commands = [
     filesystem.cat,
     filesystem.rm,
     filesystem.rmdir,
-    commands.help
+    commands.help,
+    permissions.ChangeUserPermissions
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 
