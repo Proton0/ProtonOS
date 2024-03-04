@@ -23,7 +23,6 @@ else:
     f.write(json.dumps(PPM_default))
     f.close()
     logger.info("Created PPM json succesfully")
-    # Removed PPM test.py
 
 __main__.Load_PPM_Modules()  # LoadPPMModules is in Main because of some issues regarding enviorment table and main-definied stuff
 
@@ -92,7 +91,6 @@ def install_package(command):
         packages = r.json()
         logger.info(packages)
         for pkg, pkgdata in packages.items():
-            logger.info(pkg, pkgdata)
             if pkg == command[1]:
                 if os.path.exists(f"os_filesystem/ppm/{pkg}"):
                     print("The package is already installed. Press Y to re-install the package")
