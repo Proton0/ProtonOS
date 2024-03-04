@@ -116,7 +116,14 @@ if enviorment_tables["debug_mode"]:
     logger.debug(f"Time took to configure the OS is {start - end} seconds")
 
 # Ask the user to login
-
+print("""
+██████╗ ██████╗  ██████╗ ████████╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
+██╔══██╗██╔══██╗██╔═══██╗╚══██╔══╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
+██████╔╝██████╔╝██║   ██║   ██║   ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
+██╔═══╝ ██╔══██╗██║   ██║   ██║   ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
+██║     ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
+╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+                                                                          """)
 print(f"ProtonOS {enviorment_tables['version']}")
 print("Made by Proton0")
 if enviorment_tables["logged_in_user"] == "":
