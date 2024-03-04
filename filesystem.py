@@ -20,6 +20,7 @@ else:
     print("FS setup completed. Please relaunch ProtonOS")
     exit()
 
+
 def corrupted(reason):
     logging.error("Filesystem is corrupted. Launching FS Recovery!")
     print("ProtonOS Filesystem Recovery")
@@ -34,10 +35,12 @@ def corrupted(reason):
         logging.info("Deleted old filesystem. Recreating the filesystem now")
         os.mkdir("os_filesystem")
         os.mkdir("os_filesystem/system")
-        print("Filesystem re-created succesfully. ProtonOS will close you will need to re-launch it for the filesystem to be fully recreated")
+        print(
+            "Filesystem re-created succesfully. ProtonOS will close you will need to re-launch it for the filesystem to be fully recreated")
         exit()
     else:
         exit(44)
+
 
 def cd(command):
     if command[0] == "cd":
@@ -54,7 +57,9 @@ def cd(command):
             print("permission error")
             return
         __main__.enviorment_tables["current_directory"] = command[1]
-        __main__.enviorment_tables["full_current_directory"] = __main__.enviorment_tables["full_current_directory"] + "/" + command[1]
+        __main__.enviorment_tables["full_current_directory"] = __main__.enviorment_tables[
+                                                                   "full_current_directory"] + "/" + command[1]
+
 
 def ls(command):
     if command[0] == "ls":

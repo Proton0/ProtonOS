@@ -19,10 +19,10 @@ default_users = {
     "root": "63a9f0ea7bb98050796b649e85481845"  # MD5 hash of the password "root"
 }
 
-if os.path.exists("os_filesystem/system/users.json"): # Check if it already exists. If not then we just create it
+if os.path.exists("os_filesystem/system/users.json"):  # Check if it already exists. If not then we just create it
     logger.info("Users.json file already exist.")
 else:
-    logger.warning("Users.json file does not exist. Creating one now") # create and put default_users
+    logger.warning("Users.json file does not exist. Creating one now")  # create and put default_users
     fs = open("os_filesystem/system/users.json", "w+")
     fs.write(json.dumps(default_users))
     fs.close()
@@ -30,7 +30,7 @@ else:
 
 
 def switch(command):
-    if command[0] == "switch": # Check if arugments is enough
+    if command[0] == "switch":  # Check if arugments is enough
         if command[0][1] == "":
             print("Please enter a valid username")
             return
@@ -39,22 +39,23 @@ def switch(command):
         if not len(command) >= 2:
             print("Not enough arguments provided for the command")
             return
-        if command[1] == __main__.enviorment_tables["logged_in_user"]: # preventing switching to the same account
+        if command[1] == __main__.enviorment_tables["logged_in_user"]:  # preventing switching to the same account
             print("You are already logged in as the user!")
             return
         logger.info("Reading user data file")
-        f = open("os_filesystem/system/users.json", "r") # Read the hashes of accounts
+        f = open("os_filesystem/system/users.json", "r")  # Read the hashes of accounts
         data = json.load(f)
         for key, value in data.items():
             logger.debug(f"{key} {value}")
             if key == command[1]:
                 # hash command[2] and compare
-                md5 = hashlib.md5(command[2].encode()).hexdigest() # Fix a bug when this for some reasons checks the username
+                md5 = hashlib.md5(
+                    command[2].encode()).hexdigest()  # Fix a bug when this for some reasons checks the username
                 if md5 == value:
                     logger.info("hash matched")
                     __main__.enviorment_tables["logged_in_user"] = command[
                         1]  # fix bug where this went to data and another where it switches to the god dam password but not the god dam root
-                    __main__.enviorment_tables["user_color"] = user_color.LoginGetUsername(command[1]) # Use User_color
+                    __main__.enviorment_tables["user_color"] = user_color.LoginGetUsername(command[1])  # Use User_color
                     permissions.LoginCheck(command[1])  # Permissions and stuff ykyk
                     __main__.enviorment_tables["current_directory"] = "/"
                     __main__.enviorment_tables["full_current_directory"] = "os_filesystem"

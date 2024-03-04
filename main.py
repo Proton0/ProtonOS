@@ -23,9 +23,9 @@ enviorment_tables = {
     "current_directory": "",
     "full_current_directory": "os_filesystem",
     "machine_name": "",  # all of this will be configured in user.py
-    "debug_mode": True,
+    "debug_mode": False,
     "ppm_online_server": "http://127.0.0.1:8080",
-    "ppm_allow_online": True,
+    "ppm_allow_online": False,
     "load_modules": True,
 }
 
@@ -44,13 +44,13 @@ else:
     print("FS setup completed. Please relaunch ProtonOS")
     exit()
 
-
 logger = logging.getLogger("main")
 logger.info("Loading the filesystem now!")
 import filesystem
 
 # load permissions
 import permissions
+
 # load FS
 
 # load modules and stuff
@@ -74,6 +74,7 @@ def load(command):
         except Exception as e:
             logger.error(f"error : {e}")
 
+
 # System Commands
 system_commands = [
     commands.terminalexit,  # change from sexit to terminalexit because idk it sounds weird
@@ -94,6 +95,7 @@ system_commands = [
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
 
+
 def Load_PPM_Modules():
     if not enviorment_tables["load_modules"]:
         return
@@ -112,6 +114,7 @@ def Load_PPM_Modules():
         logger.error(f"Failed to import ppm packages : {e}")
     end_ppm = timer()
     logger.info(f"PPM packages took {start_ppm - end_ppm}s to load")
+
 
 import ppm
 

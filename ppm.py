@@ -49,6 +49,7 @@ def install_package_local(command):
         print("Installed succesfully")
         f.close()
 
+
 def uninstall_package(command):
     if command[0] == "uninstall_package":
         if not len(command) >= 2:
@@ -72,6 +73,7 @@ def uninstall_package(command):
         logger.info("closing ppm")
         f.close()
         print("Uninstalled package succesfully")
+
 
 def install_package(command):
     if command[0] == "install_package":
@@ -112,14 +114,15 @@ def install_package(command):
                         f.close()
 
                 logger.info(f"getting data for package {pkg}")
-                logger.info(f"Python file is {pkgdata['py_file']} and the items required for the package is {pkgdata['pkg_data']}")
+                logger.info(
+                    f"Python file is {pkgdata['py_file']} and the items required for the package is {pkgdata['pkg_data']}")
                 os.mkdir(f"os_filesystem/ppm/{pkg}")
                 for file in pkgdata['pkg_data']:
                     print(f"Downloading {file}")
                     r = requests.get(f"{__main__.enviorment_tables['ppm_online_server']}/{file}")
                     if r.status_code != 200:
                         logger.error(f"Error while downloading {file} : {r.status_code} with message {r.content}")
-                    f = open(f"os_filesystem/ppm/{file}", "wb") # put the data of the file
+                    f = open(f"os_filesystem/ppm/{file}", "wb")  # put the data of the file
                     f.write(r.content)
                     f.close()
                 print("Download complete")
@@ -137,6 +140,7 @@ def install_package(command):
                 logger.info("closing ppm")
                 f.close()
                 print("Installed package succesfully")
+
 
 # Set the commands up (bug fix)
 __main__.system_commands.append(install_package_local)

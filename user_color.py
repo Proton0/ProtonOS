@@ -1,5 +1,6 @@
 import __main__
 from colorama import Fore, init
+
 init(autoreset=True)
 import json
 import logging
@@ -15,7 +16,7 @@ logger.info("User Colors loaded")
 default_colors = {
     "root": Fore.RED,
     "john": Fore.BLUE,
-    "system": Fore.GREEN # system will be used when no colors are set for the account
+    "system": Fore.GREEN  # system will be used when no colors are set for the account
 }
 
 if os.path.exists("os_filesystem/system/user_colors.json"):
@@ -27,6 +28,7 @@ else:
     if not f.closed:
         f.close()
     logger.info("User Colors config created")
+
 
 def LoginGetUsername(username):
     logger.info("Getting color for username : {}".format(username))
@@ -40,6 +42,7 @@ def LoginGetUsername(username):
         logger.error(f"Error while getting the color for {username} : {e}")
         return Fore.GREEN
     logger.warning(f"The user {username} does not have a system color set.")
+
 
 def ChangeColor(command):
     if command[0] == "changecolor":
