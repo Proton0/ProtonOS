@@ -3,6 +3,9 @@ import shutil
 import permissions
 import os
 import logging
+from colorama import Fore, init
+
+init(autoreset=True)
 
 if __main__.enviorment_tables["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -90,7 +93,10 @@ def ls(command):
         if __main__.enviorment_tables["current_directory"] == "/":
             k = os.listdir("os_filesystem")
             for f in k:
-                print(f)
+                if permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'], f"os_filesystem/{f}"):
+                    print(f"{Fore.GREEN}{f}")
+                else:
+                    print(f"{Fore.RED}{f}")
             return
         else:
             k = os.listdir(__main__.enviorment_tables["full_current_directory"])

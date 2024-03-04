@@ -35,7 +35,7 @@ def neofetch(command):
         if platform.system() == "Darwin":
             try:
                 cpu = psutil.cpu_times().physical_id
-            except Exception as e:
+            except:
                 print("Failed to get CPU")
                 if platform.processor() == "arm":
                     cpu = "Unknown Apple Silicon CPU"

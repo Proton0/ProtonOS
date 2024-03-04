@@ -20,5 +20,11 @@
     "pkg_data": [
       "auto_login/main.py"
     ]
+  },
+  "donut": {
+    "py_file": "os_filesystem.ppm.donut.main",
+    "pkg_data": [
+      "donut/main.py"
+    ]
   }
 }

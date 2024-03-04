@@ -48,7 +48,6 @@ def ChangeColor(command):
     if command[0] == "changecolor":
         f = open("os_filesystem/system/user_colors.json", "r+")
         k = json.load(f)
-        user = __main__.enviorment_tables["logged_in_user"]
         print("Please select any color you want")
         print(f"[1] {Fore.RED} RED")
         print(f"[2] {Fore.BLUE} BLUE")
