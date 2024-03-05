@@ -7,7 +7,7 @@ import requests
 from concurrent.futures.thread import ThreadPoolExecutor
 import permissions
 
-if __main__.enviorment_tables["debug_mode"]:
+if __main__.environment_table["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
     logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -28,7 +28,7 @@ __main__.Load_PPM_Modules()  # LoadPPMModules is in Main because of some issues 
 
 
 def PPMDownload(file):
-    r = requests.get(f"{__main__.enviorment_tables['ppm_online_server']}/{file}")
+    r = requests.get(f"{__main__.environment_table['ppm_online_server']}/{file}")
     if r.status_code != 200:
         print(f"Error while downloading {file} : {r.status_code} with message {r.content}")
     f = open(f"os_filesystem/ppm/{file}", "wb")  # put the data of the file
@@ -42,7 +42,7 @@ def install_package_local(command):
         if not len(command) >= 3:  # ppm install <package name> <package py name>
             print("Not enough arguments provided for the command")
             return
-        if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"], "ppm"):
+        if not permissions.FSOperationAllowed(__main__.environment_table["logged_in_user"], "ppm"):
             print("permission error")
             return
         print(f"Installing PPM {command[1]} with file {command[2]}")
@@ -65,7 +65,7 @@ def uninstall_package(command):
         if not len(command) >= 2:
             print("not enough arguments provided for the command")
             return
-        if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"], "ppm"):
+        if not permissions.FSOperationAllowed(__main__.environment_table["logged_in_user"], "ppm"):
             print("permission error")
             return
         shutil.rmtree(f"os_filesystem/ppm/{command[1]}")
@@ -87,17 +87,17 @@ def uninstall_package(command):
 
 def install_package(command):
     if command[0] == "install_package":
-        if not __main__.enviorment_tables["ppm_allow_online"]:
+        if not __main__.environment_table["ppm_allow_online"]:
             print("Please set ppm_allow_online to true to use this command")
             return
         if not len(command) >= 2:  # install_package <package name>
             print("Not enough arguments provided for the command")
             return
-        if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"], "ppm"):
+        if not permissions.FSOperationAllowed(__main__.environment_table["logged_in_user"], "ppm"):
             print("permission error")
             return
         logger.info("Contacting server")
-        r = requests.get(f"{__main__.enviorment_tables['ppm_online_server']}/packages.json")
+        r = requests.get(f"{__main__.environment_table['ppm_online_server']}/packages.json")
         if r.status_code != 200:
             logger.error(f"Server returned status code : {r.status_code} with message : {r.content}")
         packages = r.json()

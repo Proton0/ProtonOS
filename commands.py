@@ -17,14 +17,14 @@ def set_env_variable(command):
                 return
             key = command[1]
             value = command[2]
-            __main__.enviorment_tables[key] = value
+            __main__.environment_table[key] = value
         else:
             print("Insufficient arguments provided for the set command.")
 
 
 def view(command):
     if command[0] == "view":
-        for key, value in __main__.enviorment_tables.items():
+        for key, value in __main__.environment_table.items():
             print(f"{key} : {value}")
 
 
@@ -40,8 +40,8 @@ def neofetch(command):
                     cpu = "Unknown Apple Silicon CPU"
         else:
             cpu = platform.processor()
-        print(f"Hostname : {__main__.enviorment_tables['machine_name']}")
-        print(f"Operating System : protonOS {__main__.enviorment_tables['version']}")
+        print(f"Hostname : {__main__.environment_table['machine_name']}")
+        print(f"Operating System : protonOS {__main__.environment_table['version']}")
         print(f"CPU : {cpu} ({psutil.cpu_percent(interval=1)}% usage)")
         print(f"RAM : {psutil.virtual_memory().total / (1024 * 1024 * 1024)}GB")
 

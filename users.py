@@ -7,7 +7,7 @@ import json
 import user_color
 import permissions
 
-if __main__.enviorment_tables["debug_mode"]:
+if __main__.environment_table["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
     logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -39,7 +39,7 @@ def switch(command):
         if not len(command) >= 2:
             print("Not enough arguments provided for the command")
             return
-        if command[1] == __main__.enviorment_tables["logged_in_user"]:  # preventing switching to the same account
+        if command[1] == __main__.environment_table["logged_in_user"]:  # preventing switching to the same account
             print("You are already logged in as the user!")
             return
         logger.info("Reading user data file")
@@ -53,12 +53,12 @@ def switch(command):
                     command[2].encode()).hexdigest()  # Fix a bug when this for some reasons checks the username
                 if md5 == value:
                     logger.info("hash matched")
-                    __main__.enviorment_tables["logged_in_user"] = command[
+                    __main__.environment_table["logged_in_user"] = command[
                         1]  # fix bug where this went to data and another where it switches to the god dam password but not the god dam root
-                    __main__.enviorment_tables["user_color"] = user_color.LoginGetUsername(command[1])  # Use User_color
+                    __main__.environment_table["user_color"] = user_color.LoginGetUsername(command[1])  # Use User_color
                     permissions.LoginCheck(command[1])  # Permissions and stuff ykyk
-                    __main__.enviorment_tables["current_directory"] = "/"
-                    __main__.enviorment_tables["full_current_directory"] = "os_filesystem"
+                    __main__.environment_table["current_directory"] = "/"
+                    __main__.environment_table["full_current_directory"] = "os_filesystem"
                 else:
                     print("Password does not match")
                     logger.info(f"expected : {value} but got : {md5}")

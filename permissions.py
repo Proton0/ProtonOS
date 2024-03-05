@@ -3,7 +3,7 @@ import logging
 import json
 import os
 
-if __main__.enviorment_tables["debug_mode"]:
+if __main__.environment_table["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
     logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -50,7 +50,7 @@ def ChangeUserPermissions(command):
         if not len(command) == 2:
             print("usage: change_permission <username>")
             return
-        if __main__.enviorment_tables["logged_in_user"] != "root":
+        if __main__.environment_table["logged_in_user"] != "root":
             print("You are not allowed to access this command.")
             return
         if command[1] == "root":
@@ -79,8 +79,8 @@ def FSOperationAllowed(username, attempted_access):
     if username == "root":
         logger.info(f"Allowed user root to access {attempted_access}")
         return True
-    if __main__.enviorment_tables["run_command_as_sudo"]:
-        __main__.enviorment_tables["run_command_as_sudo"] = False
+    if __main__.environment_table["run_command_as_sudo"]:
+        __main__.environment_table["run_command_as_sudo"] = False
         return True
 
     f = open("os_filesystem/system/permissions.json", "r")

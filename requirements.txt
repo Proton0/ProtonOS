@@ -1,0 +1,5 @@
+requests~=2.31.0
+colorama~=0.4.6
+psutil~=5.9.8
+prettytable~=3.10.0
+numpy~=1.26.4
