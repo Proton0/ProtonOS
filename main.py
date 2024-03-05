@@ -60,7 +60,7 @@ def load(command):
             print("Not enough arguments provided for the command")
             return
         try:
-            exec(f"import {command[2]}")
+            exec(f"import {command[1]}")
         except Exception as e:
             logger.error(f"error : {e}")
 
