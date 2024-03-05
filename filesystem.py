@@ -7,7 +7,7 @@ from colorama import Fore, init
 
 init(autoreset=True)
 
-if __main__.enviorment_tables["debug_mode"]:
+if __main__.environment_table["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
     logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -22,6 +22,10 @@ else:
     os.mkdir("os_filesystem/system")
     print("FS setup completed. Please relaunch ProtonOS")
     exit()
+
+# Easter egg :D
+if os.path.exists("os_filesystem/secrets/easter_egg"):
+    print("secret :D")
 
 
 def corrupted(reason):
@@ -52,29 +56,29 @@ def cd(command):
             return
         if command[1] == "..":
             # Go back a directory
-            if __main__.enviorment_tables["full_current_directory"] == "os_filesystem":
-                __main__.enviorment_tables["current_directory"] = "/"
-                __main__.enviorment_tables["full_current_directory"] = "/"
+            if __main__.environment_table["full_current_directory"] == "os_filesystem":
+                __main__.environment_table["current_directory"] = "/"
+                __main__.environment_table["full_current_directory"] = "/"
             else:
-                current_directory_parts = __main__.enviorment_tables["full_current_directory"].split("/")
+                current_directory_parts = __main__.environment_table["full_current_directory"].split("/")
                 parent_directory_parts = current_directory_parts[:-1]
                 parent_directory = "/".join(parent_directory_parts)
                 parent_directory_name = parent_directory_parts[-1]
                 if parent_directory_name == "os_filesystem":
-                    __main__.enviorment_tables["current_directory"] = "/"
+                    __main__.environment_table["current_directory"] = "/"
                 else:
-                    __main__.enviorment_tables["current_directory"] = parent_directory_name
+                    __main__.environment_table["current_directory"] = parent_directory_name
                 if parent_directory == "/" or parent_directory == "":
-                    __main__.enviorment_tables["full_current_directory"] = "os_filesystem"
+                    __main__.environment_table["full_current_directory"] = "os_filesystem"
                 else:
-                    __main__.enviorment_tables["full_current_directory"] = parent_directory
+                    __main__.environment_table["full_current_directory"] = parent_directory
             return
-        if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
-                                              __main__.enviorment_tables["full_current_directory"] + "/" + command[1]):
+        if not permissions.FSOperationAllowed(__main__.environment_table['logged_in_user'],
+                                              __main__.environment_table["full_current_directory"] + "/" + command[1]):
             print("permission error")
             return
-        __main__.enviorment_tables["current_directory"] = command[1]
-        __main__.enviorment_tables["full_current_directory"] = __main__.enviorment_tables[
+        __main__.environment_table["current_directory"] = command[1]
+        __main__.environment_table["full_current_directory"] = __main__.environment_table[
                                                                    "full_current_directory"] + "/" + command[1]
 
 
@@ -82,7 +86,7 @@ def ls(command):
     if command[0] == "ls":
 
         if len(command) == 2:
-            if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
+            if not permissions.FSOperationAllowed(__main__.environment_table['logged_in_user'],
                                                   f"os_filesystem/{command[1]}"):
                 print("permission error")
                 return
@@ -90,16 +94,16 @@ def ls(command):
             for f in k:
                 print(f)
             return
-        if __main__.enviorment_tables["current_directory"] == "/":
+        if __main__.environment_table["current_directory"] == "/":
             k = os.listdir("os_filesystem")
             for f in k:
-                if permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'], f"os_filesystem/{f}"):
+                if permissions.FSOperationAllowed(__main__.environment_table['logged_in_user'], f"os_filesystem/{f}"):
                     print(f"{Fore.GREEN}{f}")
                 else:
                     print(f"{Fore.RED}{f}")
             return
         else:
-            k = os.listdir(__main__.enviorment_tables["full_current_directory"])
+            k = os.listdir(__main__.environment_table["full_current_directory"])
             for f in k:
                 print(f)
             return
@@ -108,11 +112,11 @@ def ls(command):
 def cat(command):
     if command[0] == "cat":
         if len(command) == 2:
-            if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
-                                                  __main__.enviorment_tables["full_current_directory"]):
+            if not permissions.FSOperationAllowed(__main__.environment_table['logged_in_user'],
+                                                  __main__.environment_table["full_current_directory"]):
                 print("permission error")
                 return
-            f = open(__main__.enviorment_tables["full_current_directory"] + "/" + command[1], "r")
+            f = open(__main__.environment_table["full_current_directory"] + "/" + command[1], "r")
             for line in f.readlines():
                 print(line)
 
@@ -120,15 +124,15 @@ def cat(command):
 def rm(command):
     if command[0] == "rm":
         if len(command) == 2:
-            if not permissions.FSOperationAllowed(__main__.enviorment_tables["logged_in_user"],
-                                                  __main__.enviorment_tables["full_current_directory"] + "/" + command[
+            if not permissions.FSOperationAllowed(__main__.environment_table["logged_in_user"],
+                                                  __main__.environment_table["full_current_directory"] + "/" + command[
                                                       1]):
                 print("permission error")
                 return
-            if os.path.isfile(__main__.enviorment_tables["full_current_directory"] + "/" + command[1]):
-                os.remove(__main__.enviorment_tables["full_current_directory"] + "/" + command[1])
+            if os.path.isfile(__main__.environment_table["full_current_directory"] + "/" + command[1]):
+                os.remove(__main__.environment_table["full_current_directory"] + "/" + command[1])
             else:
-                shutil.rmtree(__main__.enviorment_tables["full_current_directory"] + "/" + command[1])
+                shutil.rmtree(__main__.environment_table["full_current_directory"] + "/" + command[1])
 
 
 def rmdir(command):
@@ -138,16 +142,16 @@ def rmdir(command):
 
 def pwd(command):
     if command[0] == "pwd":
-        print(__main__.enviorment_tables['full_current_directory'])
+        print(__main__.environment_table['full_current_directory'])
 
 
 def mkdir(command):
     if command[0] == "mkdir":
         if len(command) == 2:
-            if not permissions.FSOperationAllowed(__main__.enviorment_tables['logged_in_user'],
-                                                  __main__.enviorment_tables['full_current_directory'] + "/" + command[
+            if not permissions.FSOperationAllowed(__main__.environment_table['logged_in_user'],
+                                                  __main__.environment_table['full_current_directory'] + "/" + command[
                                                       1]):
                 print("permission error")
                 return
             else:
-                os.mkdir(__main__.enviorment_tables["full_current_directory"] + "/" + command[1])
+                os.mkdir(__main__.environment_table["full_current_directory"] + "/" + command[1])

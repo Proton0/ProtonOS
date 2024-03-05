@@ -18,33 +18,31 @@ start = timer()
 init(autoreset=True)
 
 # Configurations and stuff
-enviorment_tables = {
-    "version": 1.3,
+environment_table = {
+    "version": 1.5,
     "user_color": Fore.GREEN,  # System default
     "logged_in_user": "",  # we switch to root once everything has been set-up
     "current_directory": "",
     "full_current_directory": "os_filesystem",
     "machine_name": "",  # all of this will be configured in user.py
-    "debug_mode": True,
+    "debug_mode": False,
     "ppm_online_server": "http://127.0.0.1:8080",
-    "ppm_allow_online": True,
+    "ppm_allow_online": False,
     "load_modules": True,
     "run_command_as_sudo": False
 }
-if enviorment_tables["debug_mode"]:
+if environment_table["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
     logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 
-# create FS
+# Create fs folders
 if os.path.exists("os_filesystem"):
     logging.info("Filesystem already exists.")
 else:
     logging.warning("Filesystem does not exist. Creating one now")
     os.mkdir("os_filesystem")
     os.mkdir("os_filesystem/system")
-    print("FS setup completed. Please relaunch ProtonOS")
-    exit()
 
 logger = logging.getLogger("main")
 
@@ -62,7 +60,7 @@ def load(command):
             print("Not enough arguments provided for the command")
             return
         try:
-            exec(f"import {command[2]}")
+            exec(f"import {command[1]}")
         except Exception as e:
             logger.error(f"error : {e}")
 
@@ -97,7 +95,7 @@ start_ppm = 0
 end_ppm = 0
 def Load_PPM_Modules():
     global start_ppm, end_ppm
-    if not enviorment_tables["load_modules"]:
+    if not environment_table["load_modules"]:
         return
     start_ppm = timer()
     try:
@@ -122,7 +120,7 @@ logger.info("definied system commands succesfully")
 
 end = timer()
 
-if enviorment_tables["debug_mode"]:
+if environment_table["debug_mode"]:
     logger.debug(f"Time took to configure the OS is {start - end} seconds")
 
 # Ask the user to login
@@ -134,40 +132,40 @@ print("""
 ██║     ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
 ╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
                                                                           """)
-print(f"ProtonOS {enviorment_tables['version']}")
+print(f"ProtonOS {environment_table['version']}")
 print("Made by Proton0")
-if enviorment_tables["logged_in_user"] == "":
+if environment_table["logged_in_user"] == "":
     user = input("Enter username (default is root) : ")
     if user == "":
         user = "root"
     password = input(f"Enter password for user {user} : ")
     users.switch(["switch", user, password])
 
-    if enviorment_tables["logged_in_user"] == "":
+    if environment_table["logged_in_user"] == "":
         logger.error("An error while logging in. Most likely you have entered the wrong username or password")
         exit()
     else:
         # set up
-        enviorment_tables["machine_name"] = "protonOS"
-        enviorment_tables["current_directory"] = "/"
+        environment_table["machine_name"] = "protonOS"
+        environment_table["current_directory"] = "/"
 else:
-    enviorment_tables["user_color"] = user_color.LoginGetUsername(enviorment_tables["logged_in_user"])
+    environment_table["user_color"] = user_color.LoginGetUsername(environment_table["logged_in_user"])
 
 # Main Terminal
 while True:
     user_input = input(
-        f"{enviorment_tables['user_color']}{enviorment_tables['logged_in_user']}@{enviorment_tables['machine_name']}{Fore.RESET} {enviorment_tables["current_directory"]} > ").split(
+        f"{environment_table['user_color']}{environment_table['logged_in_user']}@{environment_table['machine_name']}{Fore.RESET} {environment_table["current_directory"]} > ").split(
         " ")
-    if os.path.isfile(f"{enviorment_tables['full_current_directory']}/{user_input[0]}.proton"):
+    if os.path.isfile(f"{environment_table['full_current_directory']}/{user_input[0]}.proton"):
         if platform.system() == "Darwin" or platform.system() == "Linux":
-            os.system(f"bash {enviorment_tables['full_current_directory']}/{user_input[0]}.proton")
+            os.system(f"bash {environment_table['full_current_directory']}/{user_input[0]}.proton")
         else:
-            os.system(f"{enviorment_tables['full_current_directory']}/{user_input[0]}")
+            os.system(f"{environment_table['full_current_directory']}/{user_input[0]}")
     else:
         for command in system_commands:
             try:
                 if user_input[0] == "sudo":
-                    enviorment_tables["run_command_as_sudo"] = True
+                    environment_table["run_command_as_sudo"] = True
                     user_input.remove("sudo")
                     command(user_input)
                 else:

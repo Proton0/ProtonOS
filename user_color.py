@@ -6,7 +6,7 @@ import json
 import logging
 import os
 
-if __main__.enviorment_tables["debug_mode"]:
+if __main__.environment_table["debug_mode"]:
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
 else:
     logging.basicConfig(level=logging.WARNING, format='[%(asctime)s] [%(name)s/%(levelname)s] %(message)s')
@@ -59,24 +59,24 @@ def ChangeColor(command):
         print(f"[8] {Fore.MAGENTA} MAGENTA")
         z = input("Select a number : ")
         if z == "1":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.RED
+            k[__main__.environment_table["logged_in_user"]] = Fore.RED
         elif z == "2":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.BLUE
+            k[__main__.environment_table["logged_in_user"]] = Fore.BLUE
         elif z == "3":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.GREEN
+            k[__main__.environment_table["logged_in_user"]] = Fore.GREEN
         elif z == "4":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.YELLOW
+            k[__main__.environment_table["logged_in_user"]] = Fore.YELLOW
         elif z == "5":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.CYAN
+            k[__main__.environment_table["logged_in_user"]] = Fore.CYAN
         elif z == "6":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.WHITE
+            k[__main__.environment_table["logged_in_user"]] = Fore.WHITE
         elif z == "7":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.BLACK
+            k[__main__.environment_table["logged_in_user"]] = Fore.BLACK
         elif z == "8":
-            k[__main__.enviorment_tables["logged_in_user"]] = Fore.MAGENTA
+            k[__main__.environment_table["logged_in_user"]] = Fore.MAGENTA
         print("Saving color...")
         f.seek(0)
         f.write(json.dumps(k))
-        __main__.enviorment_tables["user_color"] = k[__main__.enviorment_tables["logged_in_user"]]
+        __main__.environment_table["user_color"] = k[__main__.environment_table["logged_in_user"]]
         f.truncate()
         f.close()

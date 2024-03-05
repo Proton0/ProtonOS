@@ -1,6 +1,6 @@
 # Very simple auto-login module for ProtonOS
 import __main__
 
-__main__.enviorment_tables["logged_in_user"] = "root"
-__main__.enviorment_tables["machine_name"] = "protonOS"
-__main__.enviorment_tables["current_directory"] = ("/")
+__main__.environment_table["logged_in_user"] = "root"
+__main__.environment_table["machine_name"] = "protonOS"
+__main__.environment_table["current_directory"] = ("/")
