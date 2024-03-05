@@ -36,6 +36,8 @@ Start protonOS
   python3 main.py
 ```
 
+Note: The password for "root" is "root"
+
 
 ## Authors
 
