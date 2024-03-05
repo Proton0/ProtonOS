@@ -1,10 +1,14 @@
+
 # ProtonOS
 
 A simple terminal based operating system made in Python
 
+
+
 ## Demo
 
 ![ProtonOS 1.4 Screenshot](https://github.com/Proton0/ProtonOS/blob/development/github/Demo.png?raw=true, "ProtonOS 1.4")
+
 
 ## How to run ProtonOS
 
@@ -31,6 +35,9 @@ Start protonOS
 ```bash
   python3 main.py
 ```
+
+Note: The password for "root" is "root"
+
 
 ## Authors
 
