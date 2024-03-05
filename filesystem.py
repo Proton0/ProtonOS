@@ -23,6 +23,10 @@ else:
     print("FS setup completed. Please relaunch ProtonOS")
     exit()
 
+# Easter egg :D
+if os.path.exists("os_filesystem/secrets/easter_egg"):
+    print("secret :D")
+
 
 def corrupted(reason):
     logging.error("Filesystem is corrupted. Launching FS Recovery!")
