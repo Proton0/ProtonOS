@@ -29,7 +29,7 @@ else:
     logger.info("Succesfully created users.json")
 
 
-def switch(command):
+def switch_v2(command):
     if command[0] == "switch":  # Check if arugments is enough
         if command[0][1] == "":
             print("Please enter a valid username")
@@ -46,16 +46,58 @@ def switch(command):
         f = open("os_filesystem/system/users.json", "r")  # Read the hashes of accounts
         data = json.load(f)
         for key, value in data.items():
+            if key == command[1]:
+                try:
+                    md5 = hashlib.md5(command[2].encode()).hexdigest()
+                    if md5 == value:
+                        print("Logged in succesfully")
+
+                        # setup the user account
+                        __main__.environment_table["logged_in_user"] = command[1]
+                        permissions.LoginCheck(command[1])
+                        __main__.environment_table["user_color"] = user_color.LoginGetUsername(command[1])
+                        __main__.environment_table["full_current_directory"] = "os_filesystem"
+                        __main__.environment_table["full_current_directory"] = "os_filesystem"
+                        return True
+                    else:
+                        print("Incorrect password")
+                        return False
+                except Exception as e:
+                    logger.error(f"Error while logging in : {e}")
+                    return False
+
+def switch(command):
+    logger.warning("users.switch() is deprecated. Use switch_v2 instead")
+    return switch_v2(command)
+
+    if command[0] == "switch":  # Check if arugments is enough
+        if command[0][1] == "":
+            print("Please enter a valid username")
+            return
+        if command[0][2] == "":
+            print("Please enter a valid password")
+        if not len(command) >= 2:
+            print("Not enough arguments provided for the command")
+            return
+        if command[1] == __main__.environment_table["logged_in_user"]:  # preventing switching to the same account
+            print("You are already logged in as the user!")
+            return
+
+        logger.info("Reading user data file")
+        f = open("os_filesystem/system/users.json", "r")  # Read the hashes of accounts
+        data = json.load(f)
+        for key, value in data.items():
             logger.debug(f"{key} {value}")
             if key == command[1]:
                 # hash command[2] and compare
                 md5 = hashlib.md5(
-                    command[2].encode()).hexdigest()  # Fix a bug when this for some reasons checks the username
+                    command[2].encode()).hexdigest()  # Hash the password
                 if md5 == value:
                     logger.info("hash matched")
-                    __main__.environment_table["logged_in_user"] = command[
-                        1]  # fix bug where this went to data and another where it switches to the god dam password but not the god dam root
-                    __main__.environment_table["user_color"] = user_color.LoginGetUsername(command[1])  # Use User_color
+
+                    # Update logged_in_user after successful password check
+                    __main__.environment_table["logged_in_user"] = command[1]
+                    __main__.environment_table["user_color"] = user_color.LoginGetUsername(command[1])
                     permissions.LoginCheck(command[1])  # Permissions and stuff ykyk
                     __main__.environment_table["current_directory"] = "/"
                     __main__.environment_table["full_current_directory"] = "os_filesystem"

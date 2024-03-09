@@ -54,6 +54,12 @@ import users  # User Manager
 import commands  # Basic Commands
 
 
+def LoginAPI(username, password):
+    users.switch_v2(["switch", username, password])
+
+
+import login_ui  # Requirement of LoginAPI
+
 def load(command):
     if command[0] == "load":
         if not len(command) >= 2:
@@ -72,7 +78,7 @@ system_commands = [
     commands.view,
     load,
     commands.neofetch,
-    users.switch,
+    users.switch_v2,  # replaced switch with the version 2.0
     users.changepassword,
     user_color.ChangeColor,
     filesystem.ls,
@@ -135,14 +141,9 @@ print("""
 print(f"ProtonOS {environment_table['version']}")
 print("Made by Proton0")
 if environment_table["logged_in_user"] == "":
-    user = input("Enter username (default is root) : ")
-    if user == "":
-        user = "root"
-    password = input(f"Enter password for user {user} : ")
-    users.switch(["switch", user, password])
-
+    login_ui.LoginUI()
     if environment_table["logged_in_user"] == "":
-        logger.error("An error while logging in. Most likely you have entered the wrong username or password")
+        print("Unknown error while logging in.")
         exit()
     else:
         # set up
