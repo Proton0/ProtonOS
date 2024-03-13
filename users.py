@@ -68,7 +68,6 @@ def switch_v2(command):
 
 def switch(command):
     logger.warning("users.switch() is deprecated. Use switch_v2 instead")
-    return switch_v2(command)
 
     if command[0] == "switch":  # Check if arugments is enough
         if command[0][1] == "":

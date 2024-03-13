@@ -3,6 +3,7 @@
 
 A simple terminal based operating system made in Python
 
+##### It is required to have Python 3.12+
 
 
 ## Demo

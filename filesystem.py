@@ -123,6 +123,21 @@ def cat(command):
 
 def rm(command):
     if command[0] == "rm":
+        if len(command) == 3:
+            if command[1] == "-rf":
+                if command[2] == "/":
+                    k = input("Are you sure you want to delete the entire filesystem (y/n) : ")
+                    if k.lower() == "y" or k.lower() == "yes":
+                        print("Deleting filesystem")
+                        if not permissions.FSOperationAllowed(__main__.environment_table['logged_in_user'],
+                                                              "os_filesystem/system"):
+                            print("You arent allowed to do this")
+                            return
+                        shutil.rmtree("os_filesystem")
+                        print("Critical error")
+                        exit()
+                    else:
+                        print("Cancelled")
         if len(command) == 2:
             if not permissions.FSOperationAllowed(__main__.environment_table["logged_in_user"],
                                                   __main__.environment_table["full_current_directory"] + "/" + command[

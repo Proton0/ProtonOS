@@ -19,7 +19,7 @@ init(autoreset=True)
 
 # Configurations and stuff
 environment_table = {
-    "version": 1.5,
+    "version": 1.6,
     "user_color": Fore.GREEN,  # System default
     "logged_in_user": "",  # we switch to root once everything has been set-up
     "current_directory": "",
@@ -51,6 +51,7 @@ import filesystem
 import permissions
 import user_color  # User Colors
 import users  # User Manager
+import write  # Write command
 import commands  # Basic Commands
 
 
@@ -58,7 +59,15 @@ def LoginAPI(username, password):
     users.switch_v2(["switch", username, password])
 
 
-import login_ui  # Requirement of LoginAPI
+running_on_mobile_prompt = input("Are you running on mobile (y/n) : ")
+if running_on_mobile_prompt == "y" or running_on_mobile_prompt == "yes" or running_on_mobile_prompt == "Y" or running_on_mobile_prompt == "YES":
+    running_on_mobile = True
+    import mobile.login_ui as login_ui
+else:
+    print("Not running on mobile")
+    import login_ui  # Requirement of LoginAPI
+
+    running_on_mobile = False
 
 def load(command):
     if command[0] == "load":
@@ -93,6 +102,7 @@ system_commands = [
     filesystem.mkdir,
     commands.echo,
     commands.ps,
+    write.write,
     commands.time_took,
     # PPM will load ppm commands (bug fix: ppm modules cant access system_commands)
 ]
