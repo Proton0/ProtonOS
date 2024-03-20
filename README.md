@@ -1,13 +1,13 @@
-
-### ProtonOS is no longer being updated
-### Most of ProtonOS's functions will or have been ported to [OrbitOS](github.com/blank9485/OrbitOS)
-
 # ProtonOS
 
 A simple terminal based operating system made in Python
 
 ##### It is required to have Python 3.12+
 
+## Goodbye protonOS :(
+
+#### ProtonOS is no longer being updated
+#### Most of ProtonOS's functions will or have been ported to [OrbitOS](https://github.com/blank9485/OrbitOS)
 
 ## Demo
 
